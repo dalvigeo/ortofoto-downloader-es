@@ -1488,7 +1488,7 @@ $updateOutput = {
         $year = '2012_2014'
     }
 
-    $folderName = "ORTOFOTOS_${year}_selec"
+    $folderName = "ORTOFOTOS_${year}"
 
     if ($txtDest.Text.Trim()) {
         $lblOutput.Text = 'Será criada/atualizada: ' + (Join-Path $txtDest.Text.Trim() $folderName)
@@ -1628,7 +1628,7 @@ $btnAction.Add_Click({
             [void][System.IO.Directory]::CreateDirectory($destBase)
         }
 
-        $outputDir = Join-Path $destBase "ORTOFOTOS_${selectedYear}_selec"
+        $outputDir = Join-Path $destBase "ORTOFOTOS_${selectedYear}"
 
         if (-not (Test-Path -LiteralPath $outputDir -PathType Container)) {
             [void][System.IO.Directory]::CreateDirectory($outputDir)
