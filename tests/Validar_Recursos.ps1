@@ -2,6 +2,10 @@
 
 $ErrorActionPreference = 'Stop'
 
+# Garante acentuação correta nos logs do GitHub Actions / console.
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+$OutputEncoding = [Console]::OutputEncoding
+
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $resourceRoot = Join-Path $repoRoot 'resources'
 
@@ -37,12 +41,15 @@ $municipiosAtual = Read-Json 'municipios_2012_2019.json'
 $municipios2007 = Read-Json 'municipios_2007_2008.json'
 $fontes = Read-Json 'fontes_online.json'
 
-if ($municipiosAtual.PSObject.Properties.Count -ne 78) {
-    throw "Mapa 2012/2019: esperados 78 municípios; encontrados $($municipiosAtual.PSObject.Properties.Count)."
+$municipiosAtualCount = @($municipiosAtual.PSObject.Properties).Count
+$municipios2007Count = @($municipios2007.PSObject.Properties).Count
+
+if ($municipiosAtualCount -ne 78) {
+    throw "Mapa 2012/2019: esperados 78 municípios; encontrados $municipiosAtualCount."
 }
 
-if ($municipios2007.PSObject.Properties.Count -ne 78) {
-    throw "Mapa 2007/2008: esperados 78 municípios; encontrados $($municipios2007.PSObject.Properties.Count)."
+if ($municipios2007Count -ne 78) {
+    throw "Mapa 2007/2008: esperados 78 municípios; encontrados $municipios2007Count."
 }
 
 foreach ($year in @('2007_2008', '2012_2014', '2019_2020')) {
@@ -95,9 +102,7 @@ foreach ($year in @('2007_2008', '2012_2014', '2019_2020')) {
         }
     }
 
-    Write-Host (
-        "  {0}: OK ({1} blocos)" -f $year, $rows.Count
-    )
+    Write-Host ("  {0}: OK ({1} blocos)" -f $year, $rows.Count)
 }
 
 # Verificações funcionais simples dos dados municipais aprovados na RC2.
