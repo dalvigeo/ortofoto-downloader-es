@@ -1,0 +1,7 @@
+ordem,arquivo,xOff,yOff,xSize,ySize
+1,centroeste.ecw,50000,140000,90001,120001
+2,centroleste.ecw,140000,140000,90001,120001
+3,nordeste.ecw,150000,10000,82001,130001
+4,noroeste.ecw,60000,0,90001,140001
+5,sudeste.ecw,90000,260000,90001,130001
+6,sudoeste.ecw,0,260000,90001,130001

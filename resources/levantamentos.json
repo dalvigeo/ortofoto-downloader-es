@@ -1,0 +1,86 @@
+{
+  "2007_2008": {
+    "titulo": "Ortofoto 2007–2008",
+    "epsg": 31984,
+    "srsWkt": "PROJCS[\"SIRGAS 2000 / UTM zone 24S\",GEOGCS[\"SIRGAS 2000\",DATUM[\"Sistema_de_Referencia_Geocentrico_para_las_AmericaS_2000\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6674\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4674\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-39],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",10000000],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"31984\"]]",
+    "dataAxisToSRSAxisMapping": "1,2",
+    "geoTransform": [
+      "1.9999950012207031e+05",
+      "1.0000000000000000e+00",
+      "0.0000000000000000e+00",
+      "8.0300005001220703e+06",
+      "0.0000000000000000e+00",
+      "-1.0000000000000000e+00"
+    ],
+    "bandas": 3,
+    "colorInterp": [
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "dataType": "Byte",
+    "blockXSize": 256,
+    "blockYSize": 256,
+    "recipeFile": "blocos_2007_2008.csv",
+    "recipeCount": 6,
+    "vrtName": "ortomosaico_2007_2008.vrt",
+    "fullRasterXSize": 232001,
+    "fullRasterYSize": 390001
+  },
+  "2012_2014": {
+    "titulo": "Ortofoto 2012–2014",
+    "epsg": 31984,
+    "srsWkt": "PROJCS[\"SIRGAS 2000 / UTM zone 24S\",GEOGCS[\"SIRGAS 2000\",DATUM[\"Sistema_de_Referencia_Geocentrico_para_las_AmericaS_2000\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6674\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4674\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-39],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",10000000],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"31984\"]]",
+    "dataAxisToSRSAxisMapping": "1,2",
+    "geoTransform": [
+      "1.9919368755839000e+05",
+      "2.5000000000000000e-01",
+      "0.0000000000000000e+00",
+      "8.0220335811165813e+06",
+      "0.0000000000000000e+00",
+      "-2.5000000000000000e-01"
+    ],
+    "bandas": 3,
+    "colorInterp": [
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "dataType": "Byte",
+    "blockXSize": 256,
+    "blockYSize": 256,
+    "recipeFile": "blocos_2012_2014.csv",
+    "recipeCount": 547,
+    "vrtName": "ortomosaico_2012_2014.vrt",
+    "fullRasterXSize": 926534,
+    "fullRasterYSize": 1520111
+  },
+  "2019_2020": {
+    "titulo": "Ortofoto 2019–2020",
+    "epsg": 31984,
+    "srsWkt": "PROJCS[\"SIRGAS 2000 / UTM zone 24S\",GEOGCS[\"SIRGAS 2000\",DATUM[\"Sistema_de_Referencia_Geocentrico_para_las_AmericaS_2000\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6674\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4674\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-39],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",10000000],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"31984\"]]",
+    "dataAxisToSRSAxisMapping": "1,2",
+    "geoTransform": [
+      "1.9000000012207031e+05",
+      "5.0000000000000000e-01",
+      "0.0000000000000000e+00",
+      "8.0300000001220703e+06",
+      "0.0000000000000000e+00",
+      "-5.0000000000000000e-01"
+    ],
+    "bandas": 3,
+    "colorInterp": [
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "dataType": "Byte",
+    "blockXSize": 256,
+    "blockYSize": 256,
+    "recipeFile": "blocos_2019_2020.csv",
+    "recipeCount": 541,
+    "vrtName": "ortomosaico_2019_2020.vrt",
+    "fullRasterXSize": 500000,
+    "fullRasterYSize": 780000
+  }
+}

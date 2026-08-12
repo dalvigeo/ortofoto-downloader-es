@@ -1,0 +1,12 @@
+{
+  "2012_2014": "https://one.s3.es.gov.br/pr-geobases-public/MAP_ES_2012_2015/IMG_ECW",
+  "2019_2020": "https://one.s3.es.gov.br/pr-geobases-public/ORTOMOSAICO_ES_2019_2020_IMGS_KOMPSAT_3_3A/ORTOMOSAICO_ES_2019_2020_IMGS_KOMPSAT_3_3A_ECW",
+  "2007_2008": {
+    "CENTROESTE": "https://1drv.ms/u/c/97420E0734E83186/IQDMIvthMMglT7En6ES0kmwTAUShawlQE306xMJtkfuVWdk?e=pmBWaW",
+    "CENTROLESTE": "https://1drv.ms/u/c/97420E0734E83186/IQBUMAMeRxISQoc8uWd7sPvCASHhcLMF1sglWPkNs685MvI?e=AcTk3m",
+    "NORDESTE": "https://1drv.ms/u/c/97420E0734E83186/IQDwqhrIk8jFS6jNeOo7ywARATeJZ1iO81tV2cGfBZ8Bdq4?e=XVIfiK",
+    "NOROESTE": "https://1drv.ms/u/c/97420E0734E83186/IQDW07l-aFDdQLiOvCGBxq5SAaSnMxvEiJQWnIKps9SMUYc?e=dJXH81",
+    "SUDESTE": "https://1drv.ms/u/c/97420E0734E83186/IQA67p-LJhJqQaNn3FRU9qcnAZ1RsvJeOez8QeAZvF1EvkU?e=B6aSA8",
+    "SUDOESTE": "https://1drv.ms/u/c/97420E0734E83186/IQAZWbXzRBY8TKdkX0zjXfxjAchAOFuLe2g0_fjEeibGYMg?e=EAfm6d"
+  }
+}

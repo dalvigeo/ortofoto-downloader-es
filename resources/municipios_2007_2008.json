@@ -1,0 +1,276 @@
+{
+  "Afonso Cláudio": [
+    "CENTROESTE",
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Alegre": [
+    "SUDOESTE"
+  ],
+  "Alfredo Chaves": [
+    "SUDESTE"
+  ],
+  "Alto Rio Novo": [
+    "CENTROESTE",
+    "NOROESTE"
+  ],
+  "Anchieta": [
+    "SUDESTE"
+  ],
+  "Apiacá": [
+    "SUDOESTE"
+  ],
+  "Aracruz": [
+    "CENTROLESTE"
+  ],
+  "Atílio Vivacqua": [
+    "SUDOESTE"
+  ],
+  "Baixo Guandu": [
+    "CENTROESTE"
+  ],
+  "Barra de São Francisco": [
+    "NOROESTE"
+  ],
+  "Boa Esperança": [
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "Bom Jesus do Norte": [
+    "SUDOESTE"
+  ],
+  "Brejetuba": [
+    "CENTROESTE",
+    "SUDOESTE"
+  ],
+  "Cachoeiro de Itapemirim": [
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Cariacica": [
+    "SUDESTE"
+  ],
+  "Castelo": [
+    "SUDOESTE"
+  ],
+  "Colatina": [
+    "CENTROESTE",
+    "CENTROLESTE"
+  ],
+  "Conceição da Barra": [
+    "NORDESTE"
+  ],
+  "Conceição do Castelo": [
+    "SUDOESTE"
+  ],
+  "Divino de São Lourenço": [
+    "SUDOESTE"
+  ],
+  "Domingos Martins": [
+    "CENTROESTE",
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Dores do Rio Preto": [
+    "SUDOESTE"
+  ],
+  "Ecoporanga": [
+    "NOROESTE"
+  ],
+  "Fundão": [
+    "CENTROLESTE"
+  ],
+  "Governador Lindenberg": [
+    "CENTROESTE",
+    "CENTROLESTE"
+  ],
+  "Guarapari": [
+    "SUDESTE"
+  ],
+  "Guaçuí": [
+    "SUDOESTE"
+  ],
+  "Ibatiba": [
+    "SUDOESTE"
+  ],
+  "Ibiraçu": [
+    "CENTROLESTE"
+  ],
+  "Ibitirama": [
+    "SUDOESTE"
+  ],
+  "Iconha": [
+    "SUDESTE"
+  ],
+  "Irupi": [
+    "SUDOESTE"
+  ],
+  "Itaguaçu": [
+    "CENTROESTE"
+  ],
+  "Itapemirim": [
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Itarana": [
+    "CENTROESTE"
+  ],
+  "Iúna": [
+    "SUDOESTE"
+  ],
+  "Jaguaré": [
+    "CENTROLESTE",
+    "NORDESTE"
+  ],
+  "Jerônimo Monteiro": [
+    "SUDOESTE"
+  ],
+  "João Neiva": [
+    "CENTROESTE",
+    "CENTROLESTE"
+  ],
+  "Laranja da Terra": [
+    "CENTROESTE"
+  ],
+  "Linhares": [
+    "CENTROESTE",
+    "CENTROLESTE",
+    "NORDESTE"
+  ],
+  "Mantenópolis": [
+    "NOROESTE"
+  ],
+  "Marataízes": [
+    "SUDESTE"
+  ],
+  "Marechal Floriano": [
+    "SUDESTE"
+  ],
+  "Marilândia": [
+    "CENTROESTE",
+    "CENTROLESTE"
+  ],
+  "Mimoso do Sul": [
+    "SUDOESTE"
+  ],
+  "Montanha": [
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "Mucurici": [
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "Muniz Freire": [
+    "SUDOESTE"
+  ],
+  "Muqui": [
+    "SUDOESTE"
+  ],
+  "Nova Venécia": [
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "Pancas": [
+    "CENTROESTE",
+    "NOROESTE"
+  ],
+  "Pedro Canário": [
+    "NORDESTE"
+  ],
+  "Pinheiros": [
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "Piúma": [
+    "SUDESTE"
+  ],
+  "Ponto Belo": [
+    "NOROESTE"
+  ],
+  "Presidente Kennedy": [
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Rio Bananal": [
+    "CENTROLESTE",
+    "NORDESTE"
+  ],
+  "Rio Novo do Sul": [
+    "SUDESTE"
+  ],
+  "Santa Leopoldina": [
+    "CENTROESTE",
+    "CENTROLESTE",
+    "SUDESTE"
+  ],
+  "Santa Maria de Jetibá": [
+    "CENTROESTE",
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Santa Teresa": [
+    "CENTROESTE",
+    "CENTROLESTE"
+  ],
+  "Serra": [
+    "CENTROLESTE",
+    "SUDESTE"
+  ],
+  "Sooretama": [
+    "CENTROLESTE",
+    "NORDESTE"
+  ],
+  "São Domingos do Norte": [
+    "CENTROESTE",
+    "CENTROLESTE",
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "São Gabriel da Palha": [
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "São José do Calçado": [
+    "SUDOESTE"
+  ],
+  "São Mateus": [
+    "CENTROLESTE",
+    "NORDESTE"
+  ],
+  "São Roque do Canaã": [
+    "CENTROESTE",
+    "CENTROLESTE"
+  ],
+  "Vargem Alta": [
+    "SUDESTE",
+    "SUDOESTE"
+  ],
+  "Venda Nova do Imigrante": [
+    "SUDOESTE"
+  ],
+  "Viana": [
+    "SUDESTE"
+  ],
+  "Vila Pavão": [
+    "NOROESTE"
+  ],
+  "Vila Valério": [
+    "CENTROLESTE",
+    "NORDESTE",
+    "NOROESTE"
+  ],
+  "Vila Velha": [
+    "SUDESTE"
+  ],
+  "Vitória": [
+    "SUDESTE"
+  ],
+  "Água Doce do Norte": [
+    "NOROESTE"
+  ],
+  "Águia Branca": [
+    "CENTROESTE",
+    "NOROESTE"
+  ]
+}
