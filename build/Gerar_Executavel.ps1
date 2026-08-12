@@ -1,4 +1,5 @@
-﻿#requires -version 5.1
+#requires -version 5.1
+
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
@@ -9,10 +10,23 @@ $distDir = Join-Path $repoRoot 'dist'
 $outputFile = Join-Path $distDir 'Ortofoto_Downloader_ES.exe'
 $validationScript = Join-Path $repoRoot 'tests\Validar_Recursos.ps1'
 
-if (-not (Test-Path -LiteralPath $versionPath -PathType Leaf)) { throw "VERSION não encontrado: $versionPath" }
-if (-not (Test-Path -LiteralPath $appSource -PathType Leaf)) { throw "Código-fonte não encontrado: $appSource" }
+if (-not (Test-Path -LiteralPath $versionPath -PathType Leaf)) {
+    throw "VERSION não encontrado: $versionPath"
+}
 
-$version = [System.IO.File]::ReadAllText($versionPath, [System.Text.Encoding]::UTF8).Trim()
+if (-not (Test-Path -LiteralPath $appSource -PathType Leaf)) {
+    throw "Código-fonte não encontrado: $appSource"
+}
+
+if (-not (Test-Path -LiteralPath $validationScript -PathType Leaf)) {
+    throw "Script de validação não encontrado: $validationScript"
+}
+
+$version = [System.IO.File]::ReadAllText(
+    $versionPath,
+    [System.Text.Encoding]::UTF8
+).Trim()
+
 if ($version -notmatch '^\d+\.\d+\.\d+$') {
     throw "VERSION inválida: $version"
 }
@@ -21,7 +35,12 @@ Write-Host ''
 Write-Host "Ortofoto Downloader ES v$version"
 Write-Host '========================================'
 Write-Host 'Validando recursos...'
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $validationScript
+
+& powershell.exe `
+    -NoProfile `
+    -ExecutionPolicy Bypass `
+    -File $validationScript
+
 if ($LASTEXITCODE -ne 0) {
     throw "A validação dos recursos retornou o código $LASTEXITCODE."
 }
@@ -37,7 +56,9 @@ $resourceFiles = @(
 )
 
 foreach ($name in $resourceFiles) {
+
     $path = Join-Path $resourceRoot $name
+
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Recurso não encontrado: $path"
     }
@@ -47,50 +68,187 @@ if (-not (Test-Path -LiteralPath $distDir -PathType Container)) {
     [void][System.IO.Directory]::CreateDirectory($distDir)
 }
 
-$extractLines = New-Object System.Collections.Generic.List[string]
-$resourceArgs = New-Object System.Collections.Generic.List[string]
+# Localiza a biblioteca do Windows PowerShell instalada no sistema.
+$automationAssembly = [System.Management.Automation.PowerShell].Assembly.Location
 
-$appLogicalName = 'OrtofotoDownloaderES.src.Ortofoto_Downloader_ES.ps1'
-$resourceArgs.Add("/resource:$appSource,$appLogicalName")
-$extractLines.Add('            ExtractResource(assembly, "' + $appLogicalName + '", scriptPath);')
-
-foreach ($name in $resourceFiles) {
-    $path = Join-Path $resourceRoot $name
-    $logicalName = 'OrtofotoDownloaderES.resources.' + $name
-    $resourceArgs.Add("/resource:$path,$logicalName")
-    $escapedName = $name.Replace('\', '\\').Replace('"', '\"')
-    $extractLines.Add('            ExtractResource(assembly, "' + $logicalName + '", Path.Combine(resourcesDir, "' + $escapedName + '"));')
+if (
+    -not $automationAssembly -or
+    -not (Test-Path -LiteralPath $automationAssembly -PathType Leaf)
+) {
+    throw 'System.Management.Automation.dll não foi localizada.'
 }
 
-$extractCode = ($extractLines -join "`r`n")
+Write-Host ''
+Write-Host 'PowerShell host:'
+Write-Host $automationAssembly
+
+# Recursos incorporados ao executável.
+$resourceArgs = New-Object System.Collections.Generic.List[string]
+$extractLines = New-Object System.Collections.Generic.List[string]
+
+$appLogicalName = 'OrtofotoDownloaderES.src.Ortofoto_Downloader_ES.ps1'
+
+$resourceArgs.Add(
+    "/resource:$appSource,$appLogicalName"
+)
+
+foreach ($name in $resourceFiles) {
+
+    $path = Join-Path $resourceRoot $name
+    $logicalName = 'OrtofotoDownloaderES.resources.' + $name
+
+    $resourceArgs.Add(
+        "/resource:$path,$logicalName"
+    )
+
+    $escapedName = $name.Replace('\', '\\').Replace('"', '\"')
+
+    $extractLines.Add(
+        '            ExtractResource(' +
+        'assembly, "' +
+        $logicalName +
+        '", Path.Combine(resourcesDir, "' +
+        $escapedName +
+        '"));'
+    )
+}
+
+$extractCode = $extractLines -join "`r`n"
 
 $csharp = @"
 using System;
-using System.Diagnostics;
 using System.IO;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Reflection;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 internal static class Program
 {
     private const string AppVersion = "$version";
 
-    private static void ExtractResource(Assembly assembly, string resourceName, string outputPath)
+    private const string ScriptResourceName =
+        "$appLogicalName";
+
+    private static void ExtractResource(
+        Assembly assembly,
+        string resourceName,
+        string outputPath
+    )
     {
-        using (Stream input = assembly.GetManifestResourceStream(resourceName))
+        using (
+            Stream input =
+                assembly.GetManifestResourceStream(resourceName)
+        )
         {
             if (input == null)
-                throw new InvalidOperationException("Recurso interno não encontrado: " + resourceName);
+            {
+                throw new InvalidOperationException(
+                    "Recurso interno não encontrado: " +
+                    resourceName
+                );
+            }
 
-            string parent = Path.GetDirectoryName(outputPath);
+            string parent =
+                Path.GetDirectoryName(outputPath);
+
             if (!String.IsNullOrEmpty(parent))
+            {
                 Directory.CreateDirectory(parent);
+            }
 
-            using (FileStream output = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None))
+            using (
+                FileStream output =
+                    new FileStream(
+                        outputPath,
+                        FileMode.Create,
+                        FileAccess.Write,
+                        FileShare.None
+                    )
+            )
             {
                 input.CopyTo(output);
             }
         }
+    }
+
+    private static string ReadTextResource(
+        Assembly assembly,
+        string resourceName
+    )
+    {
+        using (
+            Stream input =
+                assembly.GetManifestResourceStream(resourceName)
+        )
+        {
+            if (input == null)
+            {
+                throw new InvalidOperationException(
+                    "Recurso interno não encontrado: " +
+                    resourceName
+                );
+            }
+
+            using (
+                StreamReader reader =
+                    new StreamReader(
+                        input,
+                        Encoding.UTF8,
+                        true
+                    )
+            )
+            {
+                return reader.ReadToEnd();
+            }
+        }
+    }
+
+    private static string GetPowerShellErrors(
+        PowerShell powerShell
+    )
+    {
+        if (
+            powerShell == null ||
+            powerShell.Streams == null ||
+            powerShell.Streams.Error == null ||
+            powerShell.Streams.Error.Count == 0
+        )
+        {
+            return "Erro não detalhado pelo mecanismo PowerShell.";
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        foreach (
+            ErrorRecord error in
+            powerShell.Streams.Error
+        )
+        {
+            if (builder.Length > 0)
+            {
+                builder.AppendLine();
+                builder.AppendLine();
+            }
+
+            builder.Append(error.ToString());
+
+            if (error.InvocationInfo != null)
+            {
+                string position =
+                    error.InvocationInfo.PositionMessage;
+
+                if (!String.IsNullOrWhiteSpace(position))
+                {
+                    builder.AppendLine();
+                    builder.Append(position);
+                }
+            }
+        }
+
+        return builder.ToString();
     }
 
     [STAThread]
@@ -98,51 +256,109 @@ internal static class Program
     {
         string tempRoot = null;
 
+        string previousResourceRoot =
+            Environment.GetEnvironmentVariable(
+                "ORTOFOTO_RESOURCE_ROOT"
+            );
+
+        string previousAppVersion =
+            Environment.GetEnvironmentVariable(
+                "ORTOFOTO_APP_VERSION"
+            );
+
         try
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             tempRoot = Path.Combine(
                 Path.GetTempPath(),
                 "OrtofotoDownloaderES",
                 Guid.NewGuid().ToString("N")
             );
 
-            string srcDir = Path.Combine(tempRoot, "src");
-            string resourcesDir = Path.Combine(tempRoot, "resources");
-            Directory.CreateDirectory(srcDir);
+            string resourcesDir =
+                Path.Combine(
+                    tempRoot,
+                    "resources"
+                );
+
             Directory.CreateDirectory(resourcesDir);
 
-            string scriptPath = Path.Combine(srcDir, "Ortofoto_Downloader_ES.ps1");
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly =
+                Assembly.GetExecutingAssembly();
 
 $extractCode
 
-            string windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            string powershell = Path.Combine(
-                windows,
-                "System32",
-                "WindowsPowerShell",
-                "v1.0",
-                "powershell.exe"
+            string scriptText =
+                ReadTextResource(
+                    assembly,
+                    ScriptResourceName
+                );
+
+            Environment.SetEnvironmentVariable(
+                "ORTOFOTO_RESOURCE_ROOT",
+                resourcesDir
             );
 
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = powershell;
-            psi.Arguments = "-NoProfile -ExecutionPolicy Bypass -STA -WindowStyle Hidden -File \"" + scriptPath + "\"";
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            psi.WindowStyle = ProcessWindowStyle.Hidden;
-            psi.EnvironmentVariables["ORTOFOTO_RESOURCE_ROOT"] = resourcesDir;
-            psi.EnvironmentVariables["ORTOFOTO_APP_VERSION"] = AppVersion;
+            Environment.SetEnvironmentVariable(
+                "ORTOFOTO_APP_VERSION",
+                AppVersion
+            );
 
-            using (Process process = Process.Start(psi))
+            InitialSessionState sessionState =
+                InitialSessionState.CreateDefault();
+
+            using (
+                Runspace runspace =
+                    RunspaceFactory.CreateRunspace(
+                        sessionState
+                    )
+            )
             {
-                process.WaitForExit();
+                runspace.ApartmentState =
+                    ApartmentState.STA;
+
+                runspace.ThreadOptions =
+                    PSThreadOptions.UseCurrentThread;
+
+                runspace.Open();
+
+                using (
+                    PowerShell powerShell =
+                        PowerShell.Create()
+                )
+                {
+                    powerShell.Runspace = runspace;
+
+                    powerShell.AddScript(
+                        scriptText,
+                        false
+                    );
+
+                    powerShell.Invoke();
+
+                    if (powerShell.HadErrors)
+                    {
+                        throw new InvalidOperationException(
+                            "O aplicativo encontrou um erro " +
+                            "durante a execução." +
+                            Environment.NewLine +
+                            Environment.NewLine +
+                            GetPowerShellErrors(powerShell)
+                        );
+                    }
+                }
             }
         }
         catch (Exception ex)
         {
             MessageBox.Show(
-                "Não foi possível iniciar o Ortofoto Downloader ES.\r\n\r\n" + ex.Message,
+                "Não foi possível iniciar o " +
+                "Ortofoto Downloader ES." +
+                Environment.NewLine +
+                Environment.NewLine +
+                ex.Message,
                 "Ortofoto Downloader ES",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
@@ -150,27 +366,56 @@ $extractCode
         }
         finally
         {
+            Environment.SetEnvironmentVariable(
+                "ORTOFOTO_RESOURCE_ROOT",
+                previousResourceRoot
+            );
+
+            Environment.SetEnvironmentVariable(
+                "ORTOFOTO_APP_VERSION",
+                previousAppVersion
+            );
+
             if (!String.IsNullOrEmpty(tempRoot))
             {
                 try
                 {
                     if (Directory.Exists(tempRoot))
-                        Directory.Delete(tempRoot, true);
+                    {
+                        Directory.Delete(
+                            tempRoot,
+                            true
+                        );
+                    }
                 }
-                catch { }
+                catch
+                {
+                    // A limpeza da pasta temporária não
+                    // deve impedir o encerramento.
+                }
             }
         }
     }
 }
 "@
 
-$sourceFile = Join-Path $env:TEMP ("OrtofotoDownloaderES_" + [Guid]::NewGuid().ToString('N') + ".cs")
+$sourceFile = Join-Path `
+    $env:TEMP `
+    (
+        'OrtofotoDownloaderES_' +
+        [Guid]::NewGuid().ToString('N') +
+        '.cs'
+    )
 
 try {
+
     [System.IO.File]::WriteAllText(
         $sourceFile,
         $csharp,
-        (New-Object System.Text.UTF8Encoding($false))
+        (
+            New-Object `
+                System.Text.UTF8Encoding($false)
+        )
     )
 
     $cscCandidates = @(
@@ -179,15 +424,28 @@ try {
     )
 
     $csc = $cscCandidates |
-        Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+        Where-Object {
+            Test-Path `
+                -LiteralPath $_ `
+                -PathType Leaf
+        } |
         Select-Object -First 1
 
     if (-not $csc) {
-        throw 'O compilador C# nativo do .NET Framework não foi localizado.'
+        throw (
+            'O compilador C# nativo do ' +
+            '.NET Framework não foi localizado.'
+        )
     }
 
-    if (Test-Path -LiteralPath $outputFile -PathType Leaf) {
-        Remove-Item -LiteralPath $outputFile -Force
+    if (
+        Test-Path `
+            -LiteralPath $outputFile `
+            -PathType Leaf
+    ) {
+        Remove-Item `
+            -LiteralPath $outputFile `
+            -Force
     }
 
     $compilerArgs = @(
@@ -198,29 +456,57 @@ try {
         "/out:$outputFile",
         '/reference:System.dll',
         '/reference:System.Core.dll',
-        '/reference:System.Windows.Forms.dll'
+        '/reference:System.Windows.Forms.dll',
+        "/reference:$automationAssembly"
     )
+
     $compilerArgs += @($resourceArgs)
     $compilerArgs += $sourceFile
 
     Write-Host ''
-    Write-Host 'Compilando executável nativo...'
+    Write-Host 'Compilando executável com PowerShell incorporado...'
+
     & $csc @compilerArgs
 
     if ($LASTEXITCODE -ne 0) {
-        throw "O compilador C# retornou o código $LASTEXITCODE."
+        throw (
+            "O compilador C# retornou o código " +
+            "$LASTEXITCODE."
+        )
     }
 
-    if (-not (Test-Path -LiteralPath $outputFile -PathType Leaf)) {
+    if (
+        -not (
+            Test-Path `
+                -LiteralPath $outputFile `
+                -PathType Leaf
+        )
+    ) {
         throw 'O executável não foi criado.'
     }
+
+    $hash = Get-FileHash `
+        -LiteralPath $outputFile `
+        -Algorithm SHA256
 
     Write-Host ''
     Write-Host 'Executável criado com sucesso:'
     Write-Host $outputFile
+
+    Write-Host ''
+    Write-Host 'SHA-256:'
+    Write-Host $hash.Hash
 }
 finally {
-    if (Test-Path -LiteralPath $sourceFile -PathType Leaf) {
-        Remove-Item -LiteralPath $sourceFile -Force -ErrorAction SilentlyContinue
+
+    if (
+        Test-Path `
+            -LiteralPath $sourceFile `
+            -PathType Leaf
+    ) {
+        Remove-Item `
+            -LiteralPath $sourceFile `
+            -Force `
+            -ErrorAction SilentlyContinue
     }
 }
