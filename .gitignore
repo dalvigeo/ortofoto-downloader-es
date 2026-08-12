@@ -1,0 +1,9 @@
+dist/
+*.exe
+*.part
+*.tmp
+_RELATORIO_ORTOFOTOS.txt
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
